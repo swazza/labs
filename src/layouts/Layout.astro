@@ -1,0 +1,57 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  hideTagline?: boolean;
+}
+
+const { title, description, hideTagline = false } = Astro.props;
+const siteTitle = 'Swazza Labs';
+const fullTitle = title ? `${title} — ${siteTitle}` : siteTitle;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{fullTitle}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
+    {import.meta.env.PROD && (
+      <script
+        is:inline
+        data-goatcounter="https://swazza-labs.goatcounter.com/count"
+        async
+        src="//gc.zgo.at/count.js"
+      ></script>
+    )}
+  </head>
+  <body>
+    <div class="page">
+      <header class="site-header">
+        <a href={`${base}/`} class="site-title">{siteTitle}</a>
+        {!hideTagline && (
+          <p class="site-tagline">
+            Experiments and notes on systems, databases,
+            performance and software architecture.
+          </p>
+        )}
+      </header>
+
+      <hr class="rule" />
+
+      <main>
+        <slot />
+      </main>
+
+      <footer class="site-footer">
+        <a href="https://x.com/swazza85">@swazza85</a>
+      </footer>
+    </div>
+  </body>
+</html>
